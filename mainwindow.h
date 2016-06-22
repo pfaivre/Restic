@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include <QNetworkReply>
@@ -24,8 +23,9 @@ private slots:
     void onResult(QNetworkReply* reply);
     void requestDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 
+    void on_urlLineEdit_returnPressed();
+
 private:
     Ui::MainWindow *ui;
 };
 
-#endif // MAINWINDOW_H
