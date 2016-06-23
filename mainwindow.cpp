@@ -101,6 +101,8 @@ void MainWindow::onResult(QNetworkReply* reply)
     // Instancie la liste les enregistrements
     State* state = new State();
 
+    long errorCount = 0;
+
     // Parcours les enregistrements du Json
     for (int i = 0 ; i < data.count() ; i++) {
         QJsonObject s = data.at(i).toObject();
@@ -148,14 +150,23 @@ void MainWindow::onResult(QNetworkReply* reply)
         if (state->Temperature == 0) {
             row->setForeground(invalidBrush);
         }
+        else if (state->Temperature > 303) {
+            row->setBackground(OutBoundsBrush);
+            errorCount++;
+        }
+        else if (state->Temperature < 274) {
+            row->setBackground(OutBoundsBrush);
+            errorCount++;
+        }
 
         row = new QStandardItem(QString::number(state->Humidite));
         ((QStandardItemModel*)ui->tableView->model())->setItem(i, 5, row);
         if (state->Humidite == 0) {
             row->setForeground(invalidBrush);
         }
-        else if (state->Humidite > 40) {
+        else if (state->Humidite > 60) {
             row->setBackground(OutBoundsBrush);
+            errorCount++;
         }
 
         row = new QStandardItem(QString::number(state->Accel_x));
@@ -163,17 +174,41 @@ void MainWindow::onResult(QNetworkReply* reply)
         if (state->Accel_x == 0) {
             row->setForeground(invalidBrush);
         }
+        else if (state->Accel_x > 20) {
+            row->setBackground(OutBoundsBrush);
+            errorCount++;
+        }
+        else if (state->Accel_x < -20) {
+            row->setBackground(OutBoundsBrush);
+            errorCount++;
+        }
 
         row = new QStandardItem(QString::number(state->Accel_y));
         ((QStandardItemModel*)ui->tableView->model())->setItem(i, 7, row);
         if (state->Accel_y == 0) {
             row->setForeground(invalidBrush);
         }
+        else if (state->Accel_y > 20) {
+            row->setBackground(OutBoundsBrush);
+            errorCount++;
+        }
+        else if (state->Accel_y < -20) {
+            row->setBackground(OutBoundsBrush);
+            errorCount++;
+        }
 
         row = new QStandardItem(QString::number(state->Accel_z));
         ((QStandardItemModel*)ui->tableView->model())->setItem(i, 8, row);
         if (state->Accel_z == 0) {
             row->setForeground(invalidBrush);
+        }
+        else if (state->Accel_z > 20) {
+            row->setBackground(OutBoundsBrush);
+            errorCount++;
+        }
+        else if (state->Accel_z < -20) {
+            row->setBackground(OutBoundsBrush);
+            errorCount++;
         }
 
         row = new QStandardItem(QString::number(state->Gyro_yaw));
@@ -197,6 +232,11 @@ void MainWindow::onResult(QNetworkReply* reply)
         // Affiche la progression de l'analyse du fichier Json (50% -> 100%)
         ui->progressBar->setValue(((i * 1.0f / data.count()) * 100) / 2 + 50);
     }
+
+    if (errorCount > 0)
+        ui->labelErrors->setText("Valeurs hors normes : " + QString::number(errorCount));
+    else
+        ui->labelErrors->setText("");
 
     ui->progressBar->setValue(100);
 
