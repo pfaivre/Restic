@@ -22,6 +22,7 @@ private slots:
 
     void onResult(QNetworkReply* reply);
     void requestDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+    void requestError(QNetworkReply::NetworkError);
 
     void on_urlLineEdit_returnPressed();
 
