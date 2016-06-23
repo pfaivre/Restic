@@ -25,6 +25,8 @@ private slots:
 
     void on_urlLineEdit_returnPressed();
 
+    void on_MainWindow_destroyed();
+
 private:
     Ui::MainWindow *ui;
 };
