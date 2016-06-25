@@ -15,6 +15,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void showProgressBar(bool show);
+
 private slots:
     void on_closeButton_clicked();
 
@@ -22,9 +24,6 @@ private slots:
 
     void onResult(QNetworkReply* reply);
     void requestDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-    void requestError(QNetworkReply::NetworkError);
-
-    void on_urlLineEdit_returnPressed();
 
     void on_MainWindow_destroyed();
 
